@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import SECRETS from "./secrets";
 
-// the basic form
+
 export default function Form() {
     const { register, handleSubmit } = useForm();
 
