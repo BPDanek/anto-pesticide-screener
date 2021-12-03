@@ -12,9 +12,7 @@ export default function TestBackend() {
                 method: "GET",
                 mode: "cors"
             })
-                .then(rawResponse => {console.log("TEST: no json", rawResponse)})
-                .then(response => response.json())
-                .then(response => {console.log("TEST: response", response)})
+                .then(rawResponse => {console.log("TEST: no json", rawResponse.text())})
                 .catch(error => {console.log("TEST: error", error)})
         })}>
         <label>Run Test  </label>
