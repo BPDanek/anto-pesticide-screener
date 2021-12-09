@@ -86,21 +86,22 @@ const COUNTIES = {
 
 const defaultValues = {
     name: "",
-    counties: []
+    counties: [],
+    renderForm: true
 };
 
 const makePretty = (county) => {
     return county.toLowerCase().replaceAll('_', ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())
 }
 
-const Form = () => {
+const Form = (formHasBeenSubmittedHandler) => {
     const [formValues, setFormValues] = useState(defaultValues);
 
     const handleNameChange = (event) => {
         const {value} = event.target
         setFormValues({
             name: value,
-            counties: formValues.counties
+            counties: formValues.counties,
         });
     }
 
@@ -109,7 +110,7 @@ const Form = () => {
             name: formValues.name,
             counties: event.target.checked ?
                 [...formValues.counties, COUNTIES[event.target.name]] :
-                [...formValues.counties.filter(county => county !== COUNTIES[event.target.name])]
+                [...formValues.counties.filter(county => county !== COUNTIES[event.target.name])],
         });
     };
 
