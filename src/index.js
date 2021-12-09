@@ -6,7 +6,7 @@ import TestBackend from "./TestBackend";
 ReactDOM.render(
   <React.StrictMode>
     <Form />
-    <TestBackend />
+    {/*<TestBackend />*/}
   </React.StrictMode>,
   document.getElementById('root')
 );
