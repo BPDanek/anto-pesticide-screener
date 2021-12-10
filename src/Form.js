@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import SECRETS from "./secrets";
+import SECRETS from "./secrets";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -7,22 +7,7 @@ import Button from "@material-ui/core/Button";
 import FormGroup from "@material-ui/core/FormGroup";
 import Checkbox from "@material-ui/core/Checkbox";
 
-// handleSubmit(data => {
-//     let url
-//     if (process.env.NODE_ENV === 'production') {
-//         url = `${SECRETS.ANTO_BACKEND_SERVER_API}query-pur-db?counties=${data.counties}`
-//     } else {
-//         url = `${SECRETS.ANTO_DEV_BACKEND_SERVER_API}query-pur-db?counties=${data.counties}`
-//     }
-//     fetch(url, {
-//         method: "GET",
-//         mode: "cors"
-//     })
-//         .then(response => {console.log("response", response.text())})
-//         .catch(error => {console.log("error", error)})
-// })}>
-
-// county_cd,couty_name
+// county_cd, couty_name
 const COUNTIES = {
     ALAMEDA: "01",
     ALPINE: "02",
@@ -81,7 +66,7 @@ const COUNTIES = {
     TUOLUMNE: "55",
     VENTURA: "56",
     YOLO: "57",
-    YUBA: '58'
+    YUBA: "58"
 }
 
 const defaultValues = {
@@ -92,6 +77,22 @@ const defaultValues = {
 
 const makePretty = (county) => {
     return county.toLowerCase().replaceAll('_', ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())
+}
+
+//ex:  counties = [10, 11, 58]
+const messageBackend = (counties) => {
+    let url
+    if (process.env.NODE_ENV === 'production') {
+        url = `${SECRETS.ANTO_BACKEND_SERVER_API}query-pur-db?counties=${counties}`
+    } else {
+        url = `${SECRETS.ANTO_DEV_BACKEND_SERVER_API}query-pur-db?counties=${counties}`
+    }
+    fetch(url, {
+        method: "GET",
+        mode: "cors"
+    })
+        .then(response => {console.log("url", url, "response", response.text())})
+        .catch(error => {console.log("url", url, "error", error)})
 }
 
 const Form = (formHasBeenSubmittedHandler) => {
@@ -117,7 +118,10 @@ const Form = (formHasBeenSubmittedHandler) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(formValues);
+
+        messageBackend(formValues.counties)
     };
+
     return (
         <form onSubmit={handleSubmit}>
             <Grid container alignItems="center" justify="center" direction="column">
