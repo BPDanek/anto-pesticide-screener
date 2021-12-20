@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import SECRETS from "./secrets";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
@@ -6,6 +6,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Button from "@material-ui/core/Button";
 import FormGroup from "@material-ui/core/FormGroup";
 import Checkbox from "@material-ui/core/Checkbox";
+
 
 // county_cd, couty_name
 const COUNTIES = {
@@ -69,95 +70,140 @@ const COUNTIES = {
     YUBA: "58"
 }
 
-const defaultValues = {
-    name: "",
-    counties: [],
-    renderForm: true
-};
+export default class Form extends React.Component {
+    constructor(props) {
+        super(props)
 
-const makePretty = (county) => {
-    return county.toLowerCase().replaceAll('_', ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())
-}
+        // bind the handler functions to this class, so that when they are passed to children components
+        // the function defined in this file.
+        this.handleNameChange = this.handleNameChange.bind(this)
+        this.handleCheckBoxChange = this.handleCheckBoxChange.bind(this)
 
-//ex:  counties = [10, 11, 58]
-const messageBackend = (counties) => {
-    let url
-    if (process.env.NODE_ENV === 'production') {
-        url = `${SECRETS.ANTO_BACKEND_SERVER_API}query-pur-db?counties=${counties}`
-    } else {
-        url = `${SECRETS.ANTO_DEV_BACKEND_SERVER_API}query-pur-db?counties=${counties}`
+        this.state = {
+            name: "",
+            counties: []
+        }
     }
-    fetch(url, {
-        method: "GET",
-        mode: "cors"
-    })
-        .then(response => {console.log("url", url, "response", response.text())})
-        .catch(error => {console.log("url", url, "error", error)})
-}
 
-const Form = (formHasBeenSubmittedHandler) => {
-    const [formValues, setFormValues] = useState(defaultValues);
+    makePretty(county) {
+        return county.toLowerCase().replaceAll('_', ' ').replace(/^(.)|\s+(.)/g, c => c.toUpperCase())
+    }
 
-    const handleNameChange = (event) => {
+    handleNameChange(event) {
         const {value} = event.target
-        setFormValues({
+        this.setState({
             name: value,
-            counties: formValues.counties,
+            counties: this.state.counties,
         });
     }
 
-    const handleCheckBoxChange = (event) => {
-        setFormValues({
-            name: formValues.name,
+    handleCheckBoxChange(event) {
+        this.setState({
+            name: this.state.name,
             counties: event.target.checked ?
-                [...formValues.counties, COUNTIES[event.target.name]] :
-                [...formValues.counties.filter(county => county !== COUNTIES[event.target.name])],
+                [...this.state.counties, COUNTIES[event.target.name]] :
+                [...this.state.counties.filter(county => county !== COUNTIES[event.target.name])],
         });
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(formValues);
-
-        messageBackend(formValues.counties)
-    };
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <Grid container alignItems="center" justify="center" direction="column">
-                <Grid item>
-                    <TextField
-                        id="name-input"
-                        name="name"
-                        label="Name"
-                        type="text"
-                        value={formValues.name}
-                        onChange={handleNameChange}
-                    />
+    render() {
+        const { onFormSubmit } = this.props
+        return (
+            <form onSubmit={() => onFormSubmit(this.state.name, this.state.counties)}>
+                <Grid container alignItems="center" justifyContent="center" direction="column">
+                    <Grid item>
+                        <TextField
+                            id="name-input"
+                            name="name"
+                            label="Name"
+                            type="text"
+                            value={this.state.name}
+                            onChange={this.handleNameChange}
+                        />
+                    </Grid>
+                    <Grid container alignItems="center" justifyContent="center" direction="row">
+                        <Grid item>
+                            <FormGroup>
+                                {
+                                    Object.keys(COUNTIES).slice(0,15).map((county) => {
+                                        return (
+                                            <FormControlLabel
+                                                key={COUNTIES[county]}
+                                                id={`${county}-input`}
+                                                name={county}
+                                                value={this.state.counties}
+                                                control={<Checkbox />}
+                                                label={this.makePretty(county)}
+                                                onChange={this.handleCheckBoxChange}
+                                            />
+                                        )
+                                    })
+                                }
+                            </FormGroup>
+                        </Grid>
+                        <Grid item>
+                            <FormGroup>
+                                {
+                                    Object.keys(COUNTIES).slice(15,30).map((county) => {
+                                        return (
+                                            <FormControlLabel
+                                                key={COUNTIES[county]}
+                                                id={`${county}-input`}
+                                                name={county}
+                                                value={this.state.counties}
+                                                control={<Checkbox />}
+                                                label={this.makePretty(county)}
+                                                onChange={this.handleCheckBoxChange}
+                                            />
+                                        )
+                                    })
+                                }
+                            </FormGroup>
+                        </Grid>
+                        <Grid item>
+                            <FormGroup>
+                                {
+                                    Object.keys(COUNTIES).slice(30,45).map((county) => {
+                                        return (
+                                            <FormControlLabel
+                                                key={COUNTIES[county]}
+                                                id={`${county}-input`}
+                                                name={county}
+                                                value={this.state.counties}
+                                                control={<Checkbox />}
+                                                label={this.makePretty(county)}
+                                                onChange={this.handleCheckBoxChange}
+                                            />
+                                        )
+                                    })
+                                }
+                            </FormGroup>
+                        </Grid>
+                        <Grid item>
+                            <FormGroup>
+                                {
+                                    Object.keys(COUNTIES).slice(45,58).map((county) => {
+                                        return (
+                                            <FormControlLabel
+                                                key={COUNTIES[county]}
+                                                id={`${county}-input`}
+                                                name={county}
+                                                value={this.state.counties}
+                                                control={<Checkbox />}
+                                                label={this.makePretty(county)}
+                                                onChange={this.handleCheckBoxChange}
+                                            />
+                                        )
+                                    })
+                                }
+                            </FormGroup>
+                        </Grid>
+                    </Grid>
+                    <Button variant="contained" color="primary" type="submit">
+                        Submit
+                    </Button>
                 </Grid>
-                <Grid item>
-                    <FormGroup>
-                    {
-                        Object.keys(COUNTIES).map((county) => {
-                            return (
-                                <FormControlLabel
-                                    id={`${county}-input`}
-                                    name={county}
-                                    value={formValues.counties}
-                                    control={<Checkbox />}
-                                    label={makePretty(county)}
-                                    onChange={handleCheckBoxChange}
-                                />
-                            )
-                        })
-                    }
-                    </FormGroup>
-                </Grid>
-                <Button variant="contained" color="primary" type="submit">
-                    Submit
-                </Button>
-            </Grid>
-        </form>
-    );
-};
-export default Form;
+            </form>
+        )
+    }
+}

@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Form from "./Form";
+import PrettyForm from "./PrettyForm";
+
 // import TestBackend from "./TestBackend";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Form />
-    {/*<TestBackend />*/}
+      <PrettyForm />
   </React.StrictMode>,
   document.getElementById('root')
 );
-
