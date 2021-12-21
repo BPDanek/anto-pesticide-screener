@@ -137,7 +137,7 @@ export default class PrettyForm extends React.Component {
                         {Math.floor(this.computeCount(state.response.counties, state.response.maxCount)*100)}
                     </Typography>
                     <Typography sx={{ mb: 1.5 }} >
-                        Pesticides in your county.
+                        Pesticide risk index.
                     </Typography>
                     {/*<Typography variant="body2">*/}
                     {/*    well meaning and kindly.*/}
