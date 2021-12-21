@@ -8,7 +8,6 @@ import CardContent from "@material-ui/core/CardContent"
 import CardActions from "@material-ui/core/CardActions"
 import Button from "@material-ui/core/Button"
 
-
 export default class PrettyForm extends React.Component {
     constructor(props) {
         super(props)
