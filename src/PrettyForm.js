@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography"
 import CardContent from "@material-ui/core/CardContent"
 import CardActions from "@material-ui/core/CardActions"
 import Button from "@material-ui/core/Button"
+import Grid from "@material-ui/core/Grid";
 
 
 export default class PrettyForm extends React.Component {
@@ -70,10 +71,6 @@ export default class PrettyForm extends React.Component {
         return fetchPesticideCount
     }
 
-    componentDidMount() {
-
-    }
-
     handleFormSubmission(name, counties) {
         this.setState({name: name, showLoading: true, showResponse: false })
 
@@ -131,7 +128,7 @@ export default class PrettyForm extends React.Component {
 
     showResponsePage() {
         const state = this.state
-        console.log("inRender", state)
+        console.log("", state)
         const card = (
             <React.Fragment>
                 <CardContent>
@@ -157,7 +154,7 @@ export default class PrettyForm extends React.Component {
         );
 
         return (
-            <Box sx={{ minWidth: 275 }}>
+            <Box sx={{ minWidth: 275, display: 'flex', flexDirection: 'center', justifyContent: 'center'}}>
                 <Card variant="outlined">{card}</Card>
             </Box>
         );
