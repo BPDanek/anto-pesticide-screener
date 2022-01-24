@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import SECRETS from "./secrets";
+import SECRETS from "../Secrets/secrets";
 
 export default function TestBackend() {
     const { register, handleSubmit } = useForm();
