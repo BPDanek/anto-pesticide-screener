@@ -34,7 +34,7 @@ function ResponsePage(props) {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small" href={"https://tryanto.io/"}>Learn More</Button>
+                <Button size="small" href={"https://www.cdpr.ca.gov/docs/dept/quicklinks/humanhea.htm"}>Learn More</Button>
             </CardActions>
         </React.Fragment>
     );
