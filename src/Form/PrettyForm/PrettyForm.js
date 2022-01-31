@@ -2,18 +2,21 @@ import React from "react";
 import AutocompleteForm from "../Autocomplete/AutocompleteForm";
 import SECRETS from "../../Secrets/secrets";
 import Box from "@material-ui/core/Box"
-import Card from "@material-ui/core/Card"
-import Typography from "@material-ui/core/Typography"
-import CardContent from "@material-ui/core/CardContent"
-import CardActions from "@material-ui/core/CardActions"
-import Button from "@material-ui/core/Button"
+import Grid from '@mui/material/Grid';
 import ResponsePage from "../ResponsePage/ResponsePage";
+import Button from '@mui/material/Button';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
+
 
 export default class PrettyForm extends React.Component {
     constructor(props) {
         super(props)
 
+        const autocompleteKey = Math.random().toString() // by setting a new key we remount the child component (resetting it)
+
         this.state = {
+            autocompleteKey: autocompleteKey, // random key for remounting the Autocomplete element
             showForm: true,
             loading: false,
             antoQuery: {
@@ -23,6 +26,7 @@ export default class PrettyForm extends React.Component {
         }
 
         this.handleFormSubmit = this.handleFormSubmit.bind(this)
+        this.resetPrettyForm = this.resetPrettyForm.bind(this)
     }
 
     /*
@@ -90,13 +94,12 @@ export default class PrettyForm extends React.Component {
     }
 
     async handleFormSubmit(counties) {
-
         this.setState({
             loading: true
         })
 
         const pesticideCounts = await this.requestPesticideCounts(counties)
-        // const pesticideCounts = await this.fakeRequestPesticideCounts(counties)
+            // const pesticideCounts = await this.fakeRequestPesticideCounts(counties)
 
         this.setState({
             showForm: false,
@@ -108,37 +111,73 @@ export default class PrettyForm extends React.Component {
         })
     }
 
-    showResponsePage(patientName, antoQuery) {
-        return <ResponsePage
-            patientName={patientName}
-            antoQuery={antoQuery}
-        />
-    }
-
-    showFormPage(loading) {
+    showFormPage(loading, autocompleteKey) {
         return <AutocompleteForm
-            disable={loading}
+            key={ autocompleteKey }
+            loading={loading}
             onFormSubmit={this.handleFormSubmit}
         />;
     }
 
+    showResponsePage(antoQuery) {
+        return <ResponsePage
+            antoQuery={antoQuery}
+        />
+    }
+
+    resetPrettyForm() {
+
+        const autocompleteKey = Math.random().toString() // by setting a new key we remount the child component (resetting it)
+        console.log("key", autocompleteKey)
+
+        this.setState({
+            autocompleteKey: autocompleteKey,
+            showForm: true,
+            loading: false,
+            antoQuery: {
+                counties: undefined,
+                maxCount: undefined
+        }
+    })
+    }
+
     render() {
-        const { showForm, loading, patientName, antoQuery } = this.state
-        console.log("loading...", loading)
+        const { showForm, loading, autocompleteKey, antoQuery } = this.state
         return (
-            <Box sx={{
-                paddingTop: 70,
-                minWidth: 500,
-                display: 'flex',
-                flexDirection: 'center',
-                justifyContent: 'center',
-            }}>
-                {
-                    showForm ?
-                        this.showFormPage(loading) :
-                        this.showResponsePage(patientName, antoQuery)
-                }
-            </Box>
+                <Box sx={{
+                    paddingTop: 70,
+                    minWidth: 500,
+                    justifyContent: 'center',
+                }}>
+                    <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2}>
+                        <Grid item>
+                        {
+                            this.showFormPage(loading, autocompleteKey)
+                        }
+                        </Grid>
+                        <Grid item>
+                        {
+                            showForm ? null :
+                                this.showResponsePage(antoQuery)
+                        }
+                        </Grid>
+                        <Grid item>
+                            <Button variant="outlined" onClick={this.resetPrettyForm}>
+                                Reset
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Breadcrumbs aria-label="breadcrumb">
+                                <Link underline="hover" color="inherit" href="https://tryanto.io/">
+                                    Back to Anto.io
+                                </Link>
+                                <Link underline="hover" color="inherit" href="https://github.com/BPDanek">
+                                    SRC
+                                </Link>
+                            </Breadcrumbs>
+                        </Grid>
+                    </Grid>
+                </Box>
         );
     }
 }

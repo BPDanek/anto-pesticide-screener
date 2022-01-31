@@ -8,7 +8,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 
 // county_cd, county_name
 const COUNTIES = {
@@ -76,9 +76,7 @@ export default class AutoCompleteForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            phrase: "",
-            guess: "",
-            counties: []
+            counties: [],
         };
 
         // if we don't bind this it won't work as an onChange handler
@@ -92,7 +90,7 @@ export default class AutoCompleteForm extends React.Component {
     }
 
     render() {
-        const { disable, onFormSubmit } = this.props
+        const { loading, onFormSubmit } = this.props
         const { counties } = this.state
         const style = {
             fontSize: 28
@@ -116,14 +114,16 @@ export default class AutoCompleteForm extends React.Component {
                         <Autocomplete
                             multiple
                             disablePortal
-                            disabled={disable}
                             id="auto"
                             options={Object.keys(COUNTIES)}
-                            sx={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} label="Counties" />}
+                            sx={{ width: 500 }}
+                            renderInput={(params) =>
+                                <TextField {...params} label="Counties" />
+                            }
                             onChange={this.handleCountySelect}
                         />
-                        <Button // todo: add color themes next time
+                        <LoadingButton // todo: add color themes next time
+                            loading={loading}
                             variant="contained"
                             onClick={() => {
                                 onFormSubmit(counties.map((countyStr) => COUNTIES[countyStr]))
@@ -132,7 +132,7 @@ export default class AutoCompleteForm extends React.Component {
                             // color='primary'
                         >
                             Submit
-                        </Button>
+                        </LoadingButton>
                     </Grid>
                 </Grid>
             </form>

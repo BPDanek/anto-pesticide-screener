@@ -5,49 +5,43 @@ import CardActions from "@material-ui/core/CardActions";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 
-export default class ResponsePage extends React.Component {
+/*
+    please find an environmental scientist. This won't do at all.
+*/
+function computeCount(counties, maxCount) {
 
-    constructor(props) {
-        super(props);
-    }
-
-    /*
-        please find an environmental scientist. This won't do at all.
-    */
-    computeCount(counties, maxCount) {
-        try {
-            const total = counties.reduce((runningTotal, currentCountyCount) => runningTotal + parseInt(currentCountyCount), 0)
-            return total / (maxCount * counties.length)
-        } catch (e) {
-            return 0
-        }
-    }
-
-    render() {
-
-        const { patientName, antoQuery } = this.props
-
-        const card = (
-            <React.Fragment>
-                <CardContent>
-                    <Typography sx={{ width: 500, fontSize: 14 }} gutterBottom>
-                        {patientName ? patientName : "Patient"}
-                    </Typography>
-                    <Typography variant="h5" component="div">
-                        {(this.computeCount(antoQuery.counties, antoQuery.maxCount)*100).toFixed(2)}
-                    </Typography>
-                    <Typography sx={{ mb: 1.5 }} >
-                        Pesticide risk index.
-                    </Typography>
-                </CardContent>
-                <CardActions>
-                    <Button size="small">Learn More</Button>
-                </CardActions>
-            </React.Fragment>
-        );
-
-        return (
-            <Card variant="outlined">{card}</Card>
-        );
+    try {
+        const total = counties.reduce((runningTotal, currentCountyCount) => runningTotal + parseInt(currentCountyCount), 0)
+        return total / (maxCount * counties.length);
+    } catch (e) {
+        return 0;
     }
 }
+
+// stateless componenet may as well be a function
+function ResponsePage(props) {
+
+    const antoQuery = props.antoQuery
+
+    const card = (
+        <React.Fragment>
+            <CardContent>
+                <Typography variant="h5" component="div">
+                    {(computeCount(antoQuery.counties, antoQuery.maxCount)*100).toFixed(2)}
+                </Typography>
+                <Typography sx={{ mb: 1.5 }} >
+                    Pesticide risk index.
+                </Typography>
+            </CardContent>
+            <CardActions>
+                <Button size="small" href={"https://tryanto.io/"}>Learn More</Button>
+            </CardActions>
+        </React.Fragment>
+    );
+
+    return (
+        <Card variant="outlined">{card}</Card>
+    );
+}
+
+export default ResponsePage
