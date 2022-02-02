@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PrettyForm from "./PrettyForm";
+import PrettyForm from "./Form/PrettyForm/PrettyForm";
 
 // import TestBackend from "./TestBackend";
 
